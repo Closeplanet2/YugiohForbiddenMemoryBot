@@ -2,17 +2,6 @@ from tkinter import Entry, StringVar, IntVar, Label, Button, OptionMenu, Checkbu
 from PIL import ImageTk, Image
 
 class TkinterController:
-    def __init__(self):
-        self.ignore_destruction = []
-
-    def add_ignore_destruction(self, widget):
-        self.ignore_destruction.append(widget)
-
-    def destroy_all_widgets(self, gui):
-        for widget in gui.winfo_children():
-            if not widget in self.ignore_destruction:
-                widget.destroy()
-
     def add_checkbox(self, gui, text, command, bg, fg, w=5, h=5, p_x=5, p_y=5, f_s=14, f_f="Helvetica"):
         checkbox_var = IntVar()
 
@@ -40,18 +29,6 @@ class TkinterController:
         label.place(x=p_x, y=p_y)
         label.config(width=w, height=h)
         return label
-
-    def add_image_as_grid(self, gui, card_image, w=5, h=5, pos_x=5, pos_y=5, offset_x=88, offest_y=129, numx=3, numy=2, index=0):
-        mathx = int(index % numx)
-        mathy = int(index / numx)
-        posx = pos_x + (mathx * offset_x)
-        posy = pos_y + (mathy * offest_y) + (int(index / numx) * numx * numy)
-
-        card_image = card_image.resize((w, h), Image.ANTIALIAS)
-        render = ImageTk.PhotoImage(card_image)
-        label = Label(gui, image=render)
-        label.image = render
-        label.place(x=posx, y=posy)
 
 
 
