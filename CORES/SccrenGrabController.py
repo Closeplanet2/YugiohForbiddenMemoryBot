@@ -1,5 +1,6 @@
 import pygetwindow as gw
 from PIL import ImageGrab
+from itertools import product
 import pyautogui
 
 class SccrenGrabController:
@@ -17,3 +18,18 @@ class SccrenGrabController:
         width = self.window.right if self.window else width
         height = self.window.bottom if self.window else height
         return screenshot.crop((left, top, width, height))
+
+    def convert_pos(self, pos_x, pos_y):
+        if self.window is None:
+            return (pos_x, pos_y)
+        x = pos_x + self.window.left + pos_x
+        y = pos_y + self.window.top + pos_y
+        return (x, y)
+
+    def does_image_contain_color_pixel(self, image, color):
+        pixel_data = image.load()
+        for x in range(image.width):
+            for y in range(image.height):
+                if pixel_data[x, y] == color: return True;
+        return False
+

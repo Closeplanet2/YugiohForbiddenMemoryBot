@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="45c538ce-97ab-4213-93be-d9a4b6d5b44b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../CORES/GameLogicController.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../CORES/InputController.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../CORES/TextController.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Dancing Elf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Embryonic Beast.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Empress Judge.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Flower Wolf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Frenzied Panda.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Gale Dogra.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Gate Deeg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Illusionist Faceless Mage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/LaMoon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Little Chimera.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Mech Mole Zombie.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Megirus Light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Minomushi Warrior.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Needle Ball.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Sectarian of Secrets.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Sinister Serpent.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Tao the Chanter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/The Wandering Doomed.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Toon Alligator.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Torike.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Turu-Purun.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Violet Crystal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Water Element.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Winged Egg of New Life.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Wings of Wicked Flame.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Zombie Warrior.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../IMAGES/CARDS/Zone Eater.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Testx.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/_VERSION_1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../thresh.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CORES/GameDataController.py" beforeDir="false" afterPath="$PROJECT_DIR$/../CORES/GameDataController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CORES/SccrenGrabController.py" beforeDir="false" afterPath="$PROJECT_DIR$/../CORES/SccrenGrabController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CORES/StateController.py" beforeDir="false" afterPath="$PROJECT_DIR$/../CORES/StateController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GUI/MainGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/../GUI/MainGUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Test.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Test.png" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2WM1GhM1ss0Pon11jdXo5PNJGAw" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="45c538ce-97ab-4213-93be-d9a4b6d5b44b" name="Default Changelist" comment="" />
+      <created>1696527541388</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1696527541388</updated>
+      <workItem from="1696527542950" duration="736000" />
+      <workItem from="1696528298555" duration="1694000" />
+      <workItem from="1696531621873" duration="3092000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
