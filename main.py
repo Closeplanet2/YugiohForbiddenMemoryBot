@@ -1,3 +1,3 @@
 from GAME_CONTROLS.GameCore import GameCore
-GameCore()
+GameCore(debug_info=False)
 
