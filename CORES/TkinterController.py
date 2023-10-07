@@ -1,47 +1,99 @@
-from tkinter import Entry, StringVar, IntVar, Label, Button, OptionMenu, Checkbutton
+from tkinter import Tk, Label, Button
+from CORES.ThreadController import ThreadController
 from PIL import ImageTk, Image
+from enum import Enum
+
+class DestructionStage(Enum):
+    DESTROY = 0
+    DELAYED_DESTROY = 1
+    DONT_DESTROY = 2
 
 class TkinterController:
-    def __init__(self):
-        self.ignore_destruction = []
+    def __init__(self, debug_info=True):
+        self.callback_functions = []
+        self.current_window = None
+        self.debug_info = debug_info
 
-    def add_ignore_destruction(self, widget):
-        self.ignore_destruction.append(widget)
+    # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
+    def create_window(self, wh=900, ww=400, wt="Title", sw=False, sh=False, bg="#000000"):
+        self.current_window = TkinterClass(wh, ww, wt, sw, sh, bg, self.window_loop)
+        if self.debug_info: print(f"Window Created: {wt}")
 
-    def destroy_all_widgets(self, gui):
-        for widget in gui.winfo_children():
-            if not widget in self.ignore_destruction:
+    def destroy_widgets(self, current_window):
+        if not current_window is None:
+            current_window.destroy_widgets()
+
+    def add_callback_function(self, callback_function):
+        self.callback_functions.append(callback_function)
+        if self.debug_info: print("Callback Function Added!")
+
+    def start_window(self):
+        if self.current_window is None:
+            if self.debug_info: print("Current Window Is Null!")
+        else:
+            if self.debug_info: print("Starting Window....")
+            self.current_window.mainloop()
+
+    # Text, Background Color, Foreground Color, Width, Height, x_pos, y_pos, Font Size, Font Family, allow destroy
+    def add_label(self, text="Text Here", bg="#000000", fg="#ffffff", w=10, h=10, x_pos=0, y_pos=0, fs=14, ff="Helvetica", destroy_status=None):
+        if not self.current_window is None:
+            self.current_window.add_label(text, bg, fg, w, h, x_pos, y_pos, fs, ff, destroy_status)
+
+    def add_button(self, text="Text Here", function_callback=None, bg="#000000", fg="#FFFFFF", w=10, h=10, x_pos=10, y_pos=10, fs=14, ff="Helvetica", destroy_status=None):
+        if not self.current_window is None:
+            self.current_window.add_button(text, function_callback, bg, fg, w, h, x_pos, y_pos, fs, ff, destroy_status)
+
+    def add_image_as_grid(self, card_image, w=5, h=5, pos_x=5, pos_y=5, offset_x=88, offest_y=129, numx=3, numy=2, index=0, destroy_status=None):
+        if not self.current_window is None:
+            self.current_window.add_image_as_grid(card_image, w, h, pos_x, pos_y, offset_x, offest_y, numx, numy, index, destroy_status)
+
+    def window_loop(self, thread_index, args):
+        if not self.current_window is None:
+            for callback_function in self.callback_functions:
+                callback_function(self.current_window)
+
+class TkinterClass(Tk):
+    # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
+    def __init__(self, wh, ww, wt, sw, sh, bg, update_function):
+        super().__init__()
+        self.ignore_destruction = {}
+        self.ThreadController = ThreadController(max_threads=1)
+        self.main_loop_running = True
+        self.update_function = update_function
+        self.Thread = self.ThreadController.load_start(self.window_loop, True)
+        self.set_values(wh, ww, wt, sw, sh, bg)
+
+    # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
+    def set_values(self, wh, ww, wt, sw, sh, bg):
+        self.title(wt)
+        self.geometry(f"{ww}x{wh}")
+        self.resizable(width=sw, height=sh)
+        self.configure(bg=bg)
+
+    def destroy_widgets(self):
+        for widget in self.winfo_children():
+            if self.ignore_destruction[widget] is DestructionStage.DONT_DESTROY: continue
+            elif self.ignore_destruction[widget] is DestructionStage.DELAYED_DESTROY: self.ignore_destruction[widget] = DestructionStage.DESTROY
+            elif self.ignore_destruction[widget] is DestructionStage.DESTROY:
+                self.ignore_destruction.pop(widget)
                 widget.destroy()
 
-    def add_checkbox(self, gui, text, command, bg, fg, w=5, h=5, p_x=5, p_y=5, f_s=14, f_f="Helvetica"):
-        checkbox_var = IntVar()
-
-        custom_font = (f_f, f_s)
-        checkbox = Checkbutton(gui, text=text, variable=checkbox_var, bg=bg, fg=fg, font=custom_font)
-        checkbox.place(x=p_x, y=p_y)
-        checkbox.config(width=w, height=h)
-
-        def wrapper():
-            command(checkbox_var.get())
-
-        checkbox.config(command=wrapper)
-        return checkbox
-
-    def add_button(self, gui, text, command, bg, fg, w=5, h=5, p_x=5, p_y=5, f_s=14, f_f="Helvetica"):
-        custom_font = (f_f, f_s)
-        button = Button(gui, text=text, command=command, bg=bg, fg=fg, font=custom_font)
-        button.place(x=p_x, y=p_y)
-        button.config(width=w, height=h)
-        return button
-
-    def add_text(self, gui, text, bg, fg, w=5, h=5, p_x=5, p_y=5, f_s=14, f_f="Helvetica"):
-        custom_font = (f_f, f_s)
-        label = Label(gui, text=text, font=custom_font, fg=fg, bg=bg)
-        label.place(x=p_x, y=p_y)
+    # Text, Background Color, Foreground Color, Width, Height, x_pos, y_pos, Font Size, Font Family, allow destroy
+    def add_label(self, text="Text Here", bg="#000000", fg="#ffffff", w=10, h=10, x_pos=0, y_pos=0, fs=14, ff="Helvetica", destroy_status=None):
+        label = Label(self, text=text, font=(ff, fs), fg=fg, bg=bg)
+        label.place(x=x_pos, y=y_pos)
         label.config(width=w, height=h)
-        return label
+        if destroy_status is None: destroy_status = DestructionStage.DONT_DESTROY
+        self.ignore_destruction[label] = destroy_status
 
-    def add_image_as_grid(self, gui, card_image, w=5, h=5, pos_x=5, pos_y=5, offset_x=88, offest_y=129, numx=3, numy=2, index=0):
+    def add_button(self, text="Text Here", function_callback=None, bg="#000000", fg="#FFFFFF", w=10, h=10, x_pos=10, y_pos=10, fs=14, ff="Helvetica", destroy_status=None):
+        button = Button(self, text=text, command=function_callback, bg=bg, fg=fg, font=(ff, fs))
+        button.place(x=x_pos, y=y_pos)
+        button.config(width=w, height=h)
+        if destroy_status is None: destroy_status = DestructionStage.DONT_DESTROY
+        self.ignore_destruction[button] = destroy_status
+
+    def add_image_as_grid(self, card_image, w=5, h=5, pos_x=5, pos_y=5, offset_x=88, offest_y=129, numx=3, numy=2, index=0, destroy_status=None):
         mathx = int(index % numx)
         mathy = int(index / numx)
         posx = pos_x + (mathx * offset_x)
@@ -49,59 +101,13 @@ class TkinterController:
 
         card_image = card_image.resize((w, h), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(card_image)
-        label = Label(gui, image=render)
+        label = Label(self, image=render)
         label.image = render
         label.place(x=posx, y=posy)
 
+        if destroy_status is None: destroy_status = DestructionStage.DONT_DESTROY
+        self.ignore_destruction[label] = destroy_status
 
-
-
-
-
-
-
-
-
-
-    def return_entry_field(self, placeholder_text, pos, padding, width, callback):
-        var = StringVar()
-        var.trace("w", lambda name, index, mode, var=var: callback(var))
-
-        entry_field = Entry(text=placeholder_text, textvariable=var)
-        entry_field.pack(pady=padding)
-        entry_field.config(width=width)
-        entry_field.place(x=pos[0], y=pos[1])
-
-        return entry_field
-
-    def place_image(self, gui, image_path, posx, posy, size=None):
-        card_image = Image.open(image_path)
-        if not size is None:
-            card_image = card_image.resize((size))
-        render = ImageTk.PhotoImage(card_image)
-
-        label = Label(gui, image=render)
-        label.image = render
-        label.place(x=posx, y=posy)
-
-    def add_card_button(self, gui, text, callback_command, pady, width, posx, posy, card, section, max_in_section):
-        button = Button(gui, text=text, command=lambda: callback_command(card, section, max_in_section))
-        button.pack(pady=pady)
-        button.config(width=width)
-        button.place(x=posx, y=posy)
-        return button
-
-    def add_dropdown(self, gui, options, pady, width, posx, posy, callback):
-        variable = StringVar(gui)
-        variable.set(options[0])
-        variable.trace("w", lambda name, index, mode, var=variable: callback(var))
-
-        options_menu = OptionMenu(gui, variable, *options)
-        options_menu.pack(pady=pady)
-        options_menu.place(x=posx, y=posy)
-        options_menu.config(width=width)
-        return options_menu
-
-    def clear_gui(self, gui):
-        for widget in gui.winfo_children():
-            widget.destroy()
+    def window_loop(self, thread_index, args):
+        while self.main_loop_running:
+            self.update_function(thread_index, args)

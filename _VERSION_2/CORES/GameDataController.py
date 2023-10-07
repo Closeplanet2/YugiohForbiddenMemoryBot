@@ -100,10 +100,10 @@ class GameDataController:
         self.click_screen()
         index = self.player_hand.index(highest_card)
         self.set_cursor_position(new_position=index)
+        self.cursor_position = 0
         self.InputController.click_button('z')
         self.InputController.right_click_button()
         self.InputController.click_button('z')
-        self.set_cursor_position(len(self.player_hand))
         self.InputController.click_button('z')
         self.InputController.click_button('z')
         self.InputController.click_button('z')

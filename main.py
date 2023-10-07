@@ -1,4 +1,3 @@
-from GUI.MainGUI import MainGUI
+from GAME_CONTROLS.GameCore import GameCore
+GameCore()
 
-mainGUI = MainGUI()
-mainGUI.mainloop()
