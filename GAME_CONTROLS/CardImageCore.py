@@ -18,6 +18,6 @@ class CardImageCore:
                     save_path=f"IMAGES/{our_card['CardName']}.png"
                 )
                 return Image.open(f"IMAGES/{our_card['CardName']}.png")
-        return Image.open("IMAGES/CardBack.png")
+        return Image.open("IMAGES/CardBasck.png")
 
 

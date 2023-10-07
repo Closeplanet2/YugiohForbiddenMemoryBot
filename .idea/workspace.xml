@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4f2ac5dd-5b9b-4b32-8abb-9fd924863d07" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CORES/InputController.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CORES/ScreenGrabController.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CORES/TextController.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GAME_CONTROLS/CursorCore.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GAME_CONTROLS/StateCore.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/CardImageCore.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CONTROLS/CardImageCore.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/CardStorageCore.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CONTROLS/CardStorageCore.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/GameCore.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CONTROLS/GameCore.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +80,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1696678771258</updated>
-      <workItem from="1696678772592" duration="21671000" />
+      <workItem from="1696678772592" duration="22060000" />
     </task>
     <servers />
   </component>
