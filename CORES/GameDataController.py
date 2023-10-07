@@ -43,9 +43,6 @@ class GameDataController:
             for i in range(self.cursor_position, new_position, -1): self.InputController.left_click_button()
         self.cursor_position = new_position
 
-    def return_first_open_field_position(self):
-        return len(self.player_field)
-
     def gen_hand_data(self, callback_function):
         self.player_hand.clear()
         self.click_screen()
@@ -106,8 +103,7 @@ class GameDataController:
         self.InputController.click_button('z')
         self.InputController.right_click_button()
         self.InputController.click_button('z')
-        for i in range(0, self.return_first_open_field_position(), 1):
-            self.InputController.right_click_button()
+        self.set_cursor_position(len(self.player_hand))
         self.InputController.click_button('z')
         self.InputController.click_button('z')
         self.InputController.click_button('z')
