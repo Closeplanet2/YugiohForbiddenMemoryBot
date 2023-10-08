@@ -19,6 +19,12 @@ class CardStorageCore:
     def add_card_to_area(self, card_area, card):
         self.CardAreas[card_area.name].append(card)
 
+    def set_card_at_index(self, card_area, index, card):
+        self.CardAreas[card_area.name][index] = card
+
+    def return_index_of_object(self, card_area, card):
+        return self.CardAreas[card_area.name].index(card)
+
     def clean_area(self, card_area):
         self.CardAreas[card_area.name].clear()
 

@@ -17,13 +17,13 @@ class InputController:
         controller.release(key)
         time.sleep(delay)
 
-    def left_click_button(self, delay=0.5):
+    def left_click_button(self, new_cursor_position=0, delay=0.5):
         controller.press(Key.left)
         time.sleep(0.1)
         controller.release(Key.left)
         time.sleep(delay)
 
-    def right_click_button(self, delay=0.5):
+    def right_click_button(self, new_cursor_position=0, delay=0.5):
         controller.press(Key.right)
         time.sleep(0.1)
         controller.release(Key.right)

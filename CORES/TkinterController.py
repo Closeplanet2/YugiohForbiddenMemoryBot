@@ -66,7 +66,7 @@ class TkinterClass(Tk):
     # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
     def set_values(self, wh, ww, wt, sw, sh, bg):
         self.title(wt)
-        self.geometry(f"{ww}x{wh}")
+        self.geometry(f"{ww}x{wh}+0+0")
         self.resizable(width=sw, height=sh)
         self.configure(bg=bg)
 

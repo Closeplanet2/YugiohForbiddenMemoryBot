@@ -26,9 +26,16 @@ class ScreenGrabController:
         y = pos_y + self.window.top + pos_y
         return (x, y)
 
-    def does_image_contain_color_pixel(self, image, color):
+    def does_image_contain_color_pixel(self, image, colors):
         pixel_data = image.load()
         for x in range(image.width):
             for y in range(image.height):
-                if pixel_data[x, y] == color: return True;
+                if pixel_data[x, y] in colors: return True;
+        return False
+
+    def does_image_contain_more_than(self, image, colors):
+        pixel_data = image.load()
+        for x in range(image.width):
+            for y in range(image.height):
+                if not pixel_data[x, y] in colors: return True
         return False

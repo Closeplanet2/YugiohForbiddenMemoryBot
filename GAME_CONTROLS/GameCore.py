@@ -2,15 +2,14 @@ from CORES.TkinterController import TkinterController, DestructionStage
 from CORES.ScreenGrabController import ScreenGrabController
 from CORES.InputController import InputController
 from CORES.TextController import TextController
-from CORES.JSONController import JSONController
 from GAME_CONTROLS.CardStorageCore import CardStorageCore, CardAreas
 from GAME_CONTROLS.CardImageCore import CardImageCore
 from GAME_CONTROLS.StateCore import StateCore, States
 from GAME_CONTROLS.CursorCore import CursorCore
-from difflib import SequenceMatcher
+from GAME_CONTROLS.CardCore import CardCore, SearchMethod
 import time
 
-window_title = "Yu-gi-oh Forbidden Memories"
+window_title = "Yu-gi-oh Forbidden Memories!"
 window_background_color = "#211717"
 window_height = 900
 window_width = 400
@@ -25,25 +24,38 @@ class GameCore:
         self.CardImageCore = CardImageCore()
         self.TextController = TextController()
         self.StateCore = StateCore()
-        self.stored_cards = JSONController().return_dict_from_json("DATA/CardData.json")
-        self.CursorCore = CursorCore(0, 4, self.callback_down, self.callback_up)
+        self.CardCore = CardCore()
+        self.CursorCore = CursorCore(0, 4, self.InputController.left_click_button, self.InputController.right_click_button)
+        self.lock_input = False
+        self.player_turn_count = -1
         self.create_window()
 
     def create_window(self):
         self.TkinterController.create_window(wh=window_height, ww=window_width, wt=window_title, bg=window_background_color)
         self.TkinterController.add_callback_function(self.create_player_hand_images)
+        self.TkinterController.add_callback_function(self.create_player_field_images)
+        self.TkinterController.add_callback_function(self.create_enemy_field_images)
         self.TkinterController.add_callback_function(self.TkinterController.destroy_widgets)
         self.TkinterController.add_label(
-            text="Cards In Hand", bg="#64FAFF", fg="#000000", w=int(window_width / 11), h=1, x_pos=0, y_pos=5,
+            text="Cards In Hand!", bg="#64FAFF", fg="#000000", w=int(window_width / 11), h=1, x_pos=0, y_pos=5,
             destroy_status=DestructionStage.DONT_DESTROY
         )
         self.TkinterController.add_label(
-            text="Cards On Field", bg="#64FAFF", fg="#000000", w=int(window_width / 11), h=1, x_pos=0, y_pos=175,
+            text="Cards On Field!", bg="#64FAFF", fg="#000000", w=int(window_width / 11), h=1, x_pos=0, y_pos=175,
+            destroy_status=DestructionStage.DONT_DESTROY
+        )
+        self.TkinterController.add_label(
+            text="Cards On Enemy Field!", bg="#64FAFF", fg="#000000", w=int(window_width / 11), h=1, x_pos=0, y_pos=475,
             destroy_status=DestructionStage.DONT_DESTROY
         )
         self.TkinterController.add_button(
-            text="Next State!", function_callback=self.next_state_button_callback, bg="#FF8181", fg="#000000", w=int(window_width / 11),
+            text="Next State!", function_callback=self.next_state_button_callback, bg="#FF8181", fg="#000000",
+            w=int(window_width / 11),
             h=1, x_pos=0, y_pos=862, destroy_status=DestructionStage.DONT_DESTROY
+        )
+        self.TkinterController.add_button(
+            text="Override Data!", function_callback=self.override_player_data_callback, bg="#FF8181", fg="#000000", w=int(window_width / 11),
+            h=1, x_pos=0, y_pos=820, destroy_status=DestructionStage.DONT_DESTROY
         )
         self.TkinterController.start_window()
 
@@ -55,19 +67,62 @@ class GameCore:
                 card_image=card_image, w=70, h=120, pos_x=5, pos_y=40, offset_x=79, offest_y=160, numx=5,
                 numy=1, index=i, destroy_status=DestructionStage.DELAYED_DESTROY
             )
-        time.sleep(0.5)
+
+    def create_player_field_images(self, gui_window):
+        for i in range(0, 5, 1):
+            monster_card = self.CardStorageCore.return_card_from_index(CardAreas.Player_Monsters, i)
+            monster_card_image = self.CardImageCore.return_card_image(monster_card)
+            self.TkinterController.add_image_as_grid(
+                card_image=monster_card_image, w=70, h=120, pos_x=5, pos_y=210, offset_x=79, offest_y=160, numx=5,
+                numy=1, index=i, destroy_status=DestructionStage.DELAYED_DESTROY
+            )
+            spell_card = self.CardStorageCore.return_card_from_index(CardAreas.Player_Spells, i)
+            spell_card_image = self.CardImageCore.return_card_image(spell_card)
+            self.TkinterController.add_image_as_grid(
+                card_image=spell_card_image, w=70, h=120, pos_x=5, pos_y=340, offset_x=79, offest_y=160, numx=5,
+                numy=1, index=i, destroy_status=DestructionStage.DELAYED_DESTROY
+            )
+
+    def create_enemy_field_images(self, gui_window):
+        for i in range(0, 5, 1):
+            monster_card = self.CardStorageCore.return_card_from_index(CardAreas.Other_Monsters, i)
+            monster_card_image = self.CardImageCore.return_card_image(monster_card)
+            self.TkinterController.add_image_as_grid(
+                card_image=monster_card_image, w=70, h=120, pos_x=5, pos_y=510, offset_x=79, offest_y=160, numx=5,
+                numy=1, index=i, destroy_status=DestructionStage.DELAYED_DESTROY
+            )
+            spell_card = self.CardStorageCore.return_card_from_index(CardAreas.Other_Spells, i)
+            spell_card_image = self.CardImageCore.return_card_image(spell_card)
+            self.TkinterController.add_image_as_grid(
+                card_image=spell_card_image, w=70, h=120, pos_x=5, pos_y=639, offset_x=79, offest_y=160, numx=5,
+                numy=1, index=i, destroy_status=DestructionStage.DELAYED_DESTROY
+            )
 
     def next_state_button_callback(self):
-        next_state = self.StateCore.trigger_state_machine(loop_once=True)
+        if self.lock_input: return
+        self.lock_input = True
+        next_state = self.StateCore.trigger_state_machine(loop_once=False, ignore_gather_info=self.player_turn_count <= 0, ignore_combat=self.player_turn_count <= 0)
         if next_state is States.GEN_HAND_DATA: self.gen_player_hand_data()
+        elif next_state is States.GEN_BEST_CARD_TO_PLAY: self.gen_best_card_to_play_for_player()
+        elif next_state is States.GATHER_BOARD_INFO: self.gather_board_info_for_ai()
+        elif next_state is States.ATK_PLAYERS_MONSTERS: self.atk_player_monsters()
+        elif next_state is States.END_TURN: self.end_turn()
+        elif next_state is States.END_PROGRAM: self.end_program()
+        else: self.end_program()
+        self.lock_input = False
 
-    def callback_down(self, new_cursor_position):
-        self.InputController.left_click_button()
-
-    def callback_up(self, new_cursor_position):
-        self.InputController.right_click_button()
+    def override_player_data_callback(self):
+        if self.lock_input: return
+        self.lock_input = True
+        if input("Change Player Hand? (Y/N) ") == "y":
+            if len(self.CardStorageCore.return_card_area(CardAreas.Player_Hand)) == 0:
+                print("No Hand Data Stored!")
+            else: self.override_player_hand_data()
+        self.lock_input = False
 
     def gen_player_hand_data(self):
+        self.player_turn_count += 1
+        if self.debug_info: print(f"====================================================[TURN {self.player_turn_count}]====================================================")
         if self.debug_info: print("[STARTING HAND GEN]")
         self.CardStorageCore.clean_area(CardAreas.Player_Hand)
         screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
@@ -79,16 +134,62 @@ class GameCore:
             screenshot = self.ScreenGrabController.take_screenshot()
             screenshot = screenshot.crop((35, 676, 588, 742))
             screenshot_text = self.TextController.image_to_text_pillow(pil_image=screenshot)
-            card = self.compare_text_with_description_return_highest(screenshot_text)
+            card = self.CardCore.compare_text_with_description_return_highest(screenshot_text)
             if self.debug_info: print(card)
             self.CardStorageCore.add_card_to_area(CardAreas.Player_Hand, card)
 
-    def compare_text_with_description_return_highest(self, text):
-        highest_score = 0
-        highest_card = None
-        for card in self.stored_cards['Cards']:
-            score = SequenceMatcher(None, card['CardName'], text).ratio()
-            if score > highest_score:
-                highest_score = score
-                highest_card = card
-        return highest_card
+    def override_player_hand_data(self):
+        for card in self.CardStorageCore.return_card_area(CardAreas.Player_Hand):
+            if input(f"Override card {card['CardName']}? (Y/N) ").lower() == "y":
+                new_card = self.CardCore.return_card_from_name(input("New Card: "))
+                if new_card is None: continue
+                index = self.CardStorageCore.return_index_of_object(CardAreas.Player_Hand, card)
+                self.CardStorageCore.set_card_at_index(CardAreas.Player_Hand, index, new_card)
+
+    def gen_best_card_to_play_for_player(self):
+        if self.debug_info: print("[STARTING BEST CARD GEN]")
+        player_hand = self.CardStorageCore.return_card_area(CardAreas.Player_Hand)
+        highest_card, is_fusion = self.CardCore.return_best_option_for_player(player_hand, SearchMethod.ATK)
+        if self.debug_info: print(f"{highest_card},{is_fusion}")
+        if is_fusion:
+            print("THE CODE HASNT BEEN TOLD WHAT TO DO WITH FUSIONS!")
+        else:
+            screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
+            self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
+            card_index = self.CardStorageCore.return_index_of_object(CardAreas.Player_Hand, highest_card)
+            self.CursorCore.set_cursor_position(card_index)
+            self.InputController.click_button('z', delay=1)
+            self.InputController.right_click_button()
+            self.InputController.click_button('z', delay=1)
+            self.InputController.click_button('z', delay=1)
+            self.InputController.click_button('z', delay=1)
+            self.CardStorageCore.remove_card_from_area(CardAreas.Player_Hand, highest_card)
+            self.CardStorageCore.add_card_to_area(CardAreas.Player_Monsters, highest_card)
+
+    def gather_board_info_for_ai(self):
+        if self.debug_info: print("[STARTING GATHER BOARD INFO]")
+        screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
+        self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
+        self.CursorCore.default_cursor()
+        self.InputController.up_click_button()
+        for i in range(0, 5, 1):
+            self.CursorCore.set_cursor_position(i)
+            screenshot = self.ScreenGrabController.take_screenshot()
+            if not self.ScreenGrabController.does_image_contain_more_than(screenshot.crop((47, 675, 848, 734)), [(0, 0, 0), (3.1, 3.1, 3.1), (8, 8, 8)]):
+                self.CardStorageCore.add_card_to_area(CardAreas.Other_Monsters, None)
+            elif not self.ScreenGrabController.does_image_contain_more_than(screenshot.crop((47, 675, 583, 734)), [(0, 0, 0), (3.1, 3.1, 3.1), (8, 8, 8)]):
+                self.CardStorageCore.add_card_to_area(CardAreas.Other_Monsters, {"CardID": "000", "CardName": "BlankCard", "CardATK": "-1", "CardDEF": "-1"})
+            else:
+                print("Found real card in other zone")
+
+    def atk_player_monsters(self):
+        if self.debug_info: print("[STARTING ATK PLAYER MONSTERS]")
+
+    def end_turn(self):
+        if self.debug_info: print("[STARTING END TURN]")
+        screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
+        self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
+        self.InputController.enter_click_button()
+
+    def end_program(self):
+        if self.debug_info: print("[STARTING END PROGRAM]")
