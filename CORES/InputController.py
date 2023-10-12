@@ -35,6 +35,12 @@ class InputController:
         controller.release(Key.up)
         time.sleep(delay)
 
+    def down_click_button(self, delay=0.5):
+        controller.press(Key.down)
+        time.sleep(0.1)
+        controller.release(Key.down)
+        time.sleep(delay)
+
     def enter_click_button(self, delay=0.5):
         controller.press(Key.enter)
         time.sleep(0.1)

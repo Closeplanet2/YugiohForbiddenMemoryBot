@@ -5,6 +5,10 @@ from enum import Enum
 class SearchMethod(Enum):
     ATK = 1
 
+class CardPositions(Enum):
+    ATK = 1
+    DEF = 2
+
 class CardCore:
     def __init__(self):
         self.stored_cards = JSONController().return_dict_from_json("DATA/CardData.json")

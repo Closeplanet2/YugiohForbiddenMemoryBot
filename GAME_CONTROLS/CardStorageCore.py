@@ -41,3 +41,17 @@ class CardStorageCore:
         if card_index >= len(self.CardAreas[card_area.name]): return None
         elif card_index < 0: return None
         return self.CardAreas[card_area.name][card_index]
+
+    def return_highest_atk_card_from_area(self, card_area):
+        area = self.return_card_area(card_area)
+        if area is None: return None
+        highest_atk = -1
+        highest_card = None
+        for card in area:
+            card_atk = int(card['CardATK']) if len(card['CardATK']) > 0 else -1
+            if card_atk > highest_atk:
+                highest_atk = card_atk
+                highest_card = card
+        return highest_card
+
+

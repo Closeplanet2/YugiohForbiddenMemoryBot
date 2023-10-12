@@ -6,7 +6,7 @@ from GAME_CONTROLS.CardStorageCore import CardStorageCore, CardAreas
 from GAME_CONTROLS.CardImageCore import CardImageCore
 from GAME_CONTROLS.StateCore import StateCore, States
 from GAME_CONTROLS.CursorCore import CursorCore
-from GAME_CONTROLS.CardCore import CardCore, SearchMethod
+from GAME_CONTROLS.CardCore import CardCore, SearchMethod, CardPositions
 import time
 
 window_title = "Yu-gi-oh Forbidden Memories!"
@@ -110,6 +110,7 @@ class GameCore:
         elif next_state is States.END_PROGRAM: self.end_program()
         else: self.end_program()
         self.lock_input = False
+        time.sleep(2)
 
     def override_player_data_callback(self):
         if self.lock_input: return
@@ -146,13 +147,15 @@ class GameCore:
                 index = self.CardStorageCore.return_index_of_object(CardAreas.Player_Hand, card)
                 self.CardStorageCore.set_card_at_index(CardAreas.Player_Hand, index, new_card)
 
+    #todo Decide what position to summon
+    #todo Decide what star to summon with
     def gen_best_card_to_play_for_player(self):
         if self.debug_info: print("[STARTING BEST CARD GEN]")
         player_hand = self.CardStorageCore.return_card_area(CardAreas.Player_Hand)
         highest_card, is_fusion = self.CardCore.return_best_option_for_player(player_hand, SearchMethod.ATK)
         if self.debug_info: print(f"{highest_card},{is_fusion}")
         if is_fusion:
-            print("THE CODE HASNT BEEN TOLD WHAT TO DO WITH FUSIONS!")
+            if self.debug_info: print("THE CODE HASNT BEEN TOLD WHAT TO DO WITH FUSIONS!")
         else:
             screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
             self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
@@ -165,7 +168,9 @@ class GameCore:
             self.InputController.click_button('z', delay=1)
             self.CardStorageCore.remove_card_from_area(CardAreas.Player_Hand, highest_card)
             self.CardStorageCore.add_card_to_area(CardAreas.Player_Monsters, highest_card)
+            highest_card['Position'] = CardPositions.ATK.name
 
+    #todo find a way to tell what position the creature is in
     def gather_board_info_for_ai(self):
         if self.debug_info: print("[STARTING GATHER BOARD INFO]")
         screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
@@ -176,14 +181,39 @@ class GameCore:
             self.CursorCore.set_cursor_position(i)
             screenshot = self.ScreenGrabController.take_screenshot()
             if not self.ScreenGrabController.does_image_contain_more_than(screenshot.crop((47, 675, 848, 734)), [(0, 0, 0), (3.1, 3.1, 3.1), (8, 8, 8)]):
-                self.CardStorageCore.add_card_to_area(CardAreas.Other_Monsters, None)
+                if self.debug_info: print("Empty Space!")
             elif not self.ScreenGrabController.does_image_contain_more_than(screenshot.crop((47, 675, 583, 734)), [(0, 0, 0), (3.1, 3.1, 3.1), (8, 8, 8)]):
-                self.CardStorageCore.add_card_to_area(CardAreas.Other_Monsters, {"CardID": "000", "CardName": "BlankCard", "CardATK": "-1", "CardDEF": "-1"})
+                self.CardStorageCore.add_card_to_area(CardAreas.Other_Monsters, {
+                    "CardID": "000",
+                    "CardName": "BlankCard",
+                    "CardATK": "0",
+                    "CardDEF": "0",
+                    "Position": CardPositions.DEF.name
+                })
             else:
-                print("Found real card in other zone")
+                if self.debug_info: print("Found real card in other zone")
 
+    #todo highest stat is based on atk, change to update when def detection is implemented
     def atk_player_monsters(self):
+        creatures_attacked = []
+        screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
+        self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
+        self.CursorCore.default_cursor()
+        self.InputController.down_click_button(delay=1)
         if self.debug_info: print("[STARTING ATK PLAYER MONSTERS]")
+        for our_monster in self.CardStorageCore.return_card_area(CardAreas.Player_Monsters):
+            if our_monster in creatures_attacked: continue
+            if our_monster['Position'] == CardPositions.DEF.name: continue
+            highest_atk_monster = self.CardStorageCore.return_highest_atk_card_from_area(CardAreas.Other_Monsters)
+            if highest_atk_monster is None: continue
+            if int(our_monster['CardATK']) > int(highest_atk_monster['CardATK']):
+                self.InputController.click_button('z', delay=1)
+                card_index = self.CardStorageCore.return_index_of_object(CardAreas.Other_Monsters, highest_atk_monster)
+                self.CursorCore.set_cursor_position(new_cursor_position=6 - card_index)
+                self.InputController.click_button('z', delay=5)
+                self.CardStorageCore.remove_card_from_area(CardAreas.Other_Monsters, highest_atk_monster)
+                creatures_attacked.append(our_monster)
+
 
     def end_turn(self):
         if self.debug_info: print("[STARTING END TURN]")
