@@ -31,6 +31,7 @@ class CardCore:
         highest_card = None
         for card in self.stored_cards['Cards']:
             score = SequenceMatcher(None, card['CardName'], text).ratio()
+            print(score)
             if score > highest_score:
                 highest_score = score
                 highest_card = card

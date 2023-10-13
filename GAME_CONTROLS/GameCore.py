@@ -101,7 +101,7 @@ class GameCore:
     def next_state_button_callback(self):
         if self.lock_input: return
         self.lock_input = True
-        next_state = self.StateCore.trigger_state_machine(loop_once=False, ignore_gather_info=self.player_turn_count <= 0, ignore_combat=self.player_turn_count <= 0)
+        next_state = self.StateCore.trigger_state_machine(loop_once=False, ignore_gather_info=True, ignore_combat=True) #self.player_turn_count <= 0 self.player_turn_count <= 0
         if next_state is States.GEN_HAND_DATA: self.gen_player_hand_data()
         elif next_state is States.GEN_BEST_CARD_TO_PLAY: self.gen_best_card_to_play_for_player()
         elif next_state is States.GATHER_BOARD_INFO: self.gather_board_info_for_ai()
@@ -135,6 +135,7 @@ class GameCore:
             screenshot = self.ScreenGrabController.take_screenshot()
             screenshot = screenshot.crop((35, 676, 588, 742))
             screenshot_text = self.TextController.image_to_text_pillow(pil_image=screenshot)
+            print(screenshot_text)
             card = self.CardCore.compare_text_with_description_return_highest(screenshot_text)
             if self.debug_info: print(card)
             self.CardStorageCore.add_card_to_area(CardAreas.Player_Hand, card)
@@ -209,7 +210,7 @@ class GameCore:
             if int(our_monster['CardATK']) > int(highest_atk_monster['CardATK']):
                 self.InputController.click_button('z', delay=1)
                 card_index = self.CardStorageCore.return_index_of_object(CardAreas.Other_Monsters, highest_atk_monster)
-                self.CursorCore.set_cursor_position(new_cursor_position=6 - card_index)
+                self.CursorCore.set_cursor_position(new_cursor_position=4 - card_index)
                 self.InputController.click_button('z', delay=5)
                 self.CardStorageCore.remove_card_from_area(CardAreas.Other_Monsters, highest_atk_monster)
                 creatures_attacked.append(our_monster)
