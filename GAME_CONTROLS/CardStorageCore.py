@@ -54,4 +54,9 @@ class CardStorageCore:
                 highest_card = card
         return highest_card
 
+    def is_card_in_area_id(self, card_area, card_id):
+        for card in self.return_card_area(card_area):
+            if card['CardID'] == card_id: return True
+        return False
+
 

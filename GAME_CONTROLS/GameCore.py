@@ -14,6 +14,11 @@ window_background_color = "#211717"
 window_height = 900
 window_width = 400
 
+#TODO fuse from field as well
+#TODO what happens if field is full
+#TODO what to do with spell cards
+#TODO star sign
+
 class GameCore:
     def __init__(self, debug_info=False):
         self.debug_info = debug_info
@@ -101,7 +106,7 @@ class GameCore:
     def next_state_button_callback(self):
         if self.lock_input: return
         self.lock_input = True
-        next_state = self.StateCore.trigger_state_machine(loop_once=False, ignore_gather_info=True, ignore_combat=True) #self.player_turn_count <= 0 self.player_turn_count <= 0
+        next_state = self.StateCore.trigger_state_machine(loop_once=False, ignore_gather_info=self.player_turn_count <= 0, ignore_combat=self.player_turn_count <= 0)
         if next_state is States.GEN_HAND_DATA: self.gen_player_hand_data()
         elif next_state is States.GEN_BEST_CARD_TO_PLAY: self.gen_best_card_to_play_for_player()
         elif next_state is States.GATHER_BOARD_INFO: self.gather_board_info_for_ai()
@@ -135,7 +140,6 @@ class GameCore:
             screenshot = self.ScreenGrabController.take_screenshot()
             screenshot = screenshot.crop((35, 676, 588, 742))
             screenshot_text = self.TextController.image_to_text_pillow(pil_image=screenshot)
-            print(screenshot_text)
             card = self.CardCore.compare_text_with_description_return_highest(screenshot_text)
             if self.debug_info: print(card)
             self.CardStorageCore.add_card_to_area(CardAreas.Player_Hand, card)
@@ -156,7 +160,20 @@ class GameCore:
         highest_card, is_fusion = self.CardCore.return_best_option_for_player(player_hand, SearchMethod.ATK)
         if self.debug_info: print(f"{highest_card},{is_fusion}")
         if is_fusion:
-            if self.debug_info: print("THE CODE HASNT BEEN TOLD WHAT TO DO WITH FUSIONS!")
+            screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
+            self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
+            index_a, index_b, card_a, card_b = self.CardCore.return_all_fusion_materials_from_players_hand(highest_card, player_hand)
+            self.CursorCore.set_cursor_position(index_a)
+            self.InputController.up_click_button()
+            self.CursorCore.set_cursor_position(index_b)
+            self.InputController.up_click_button()
+            self.InputController.click_button('z', delay=1)
+            self.InputController.click_button('z', delay=4)
+            self.InputController.click_button('z', delay=1)
+            highest_card['Position'] = CardPositions.ATK.name
+            self.CardStorageCore.remove_card_from_area(CardAreas.Player_Hand, card_a)
+            self.CardStorageCore.remove_card_from_area(CardAreas.Player_Hand, card_b)
+            self.CardStorageCore.add_card_to_area(CardAreas.Player_Monsters, highest_card)
         else:
             screen_pos = self.ScreenGrabController.convert_pos(pos_x=30, pos_y=30)
             self.InputController.click_pos(posx=screen_pos[0], posy=screen_pos[1])
@@ -167,9 +184,9 @@ class GameCore:
             self.InputController.click_button('z', delay=1)
             self.InputController.click_button('z', delay=1)
             self.InputController.click_button('z', delay=1)
+            highest_card['Position'] = CardPositions.ATK.name
             self.CardStorageCore.remove_card_from_area(CardAreas.Player_Hand, highest_card)
             self.CardStorageCore.add_card_to_area(CardAreas.Player_Monsters, highest_card)
-            highest_card['Position'] = CardPositions.ATK.name
 
     #todo find a way to tell what position the creature is in
     def gather_board_info_for_ai(self):
@@ -210,6 +227,7 @@ class GameCore:
             if int(our_monster['CardATK']) > int(highest_atk_monster['CardATK']):
                 self.InputController.click_button('z', delay=1)
                 card_index = self.CardStorageCore.return_index_of_object(CardAreas.Other_Monsters, highest_atk_monster)
+                print(self.CursorCore.cursor_position)
                 self.CursorCore.set_cursor_position(new_cursor_position=4 - card_index)
                 self.InputController.click_button('z', delay=5)
                 self.CardStorageCore.remove_card_from_area(CardAreas.Other_Monsters, highest_atk_monster)
