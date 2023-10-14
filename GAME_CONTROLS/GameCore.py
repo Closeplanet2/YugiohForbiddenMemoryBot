@@ -115,7 +115,6 @@ class GameCore:
         elif next_state is States.END_PROGRAM: self.end_program()
         else: self.end_program()
         self.lock_input = False
-        time.sleep(2)
 
     def override_player_data_callback(self):
         if self.lock_input: return
@@ -223,8 +222,11 @@ class GameCore:
             if our_monster in creatures_attacked: continue
             if our_monster['Position'] == CardPositions.DEF.name: continue
             highest_atk_monster = self.CardStorageCore.return_highest_atk_card_from_area(CardAreas.Other_Monsters)
-            if highest_atk_monster is None: continue
-            if int(our_monster['CardATK']) > int(highest_atk_monster['CardATK']):
+            if highest_atk_monster is None:
+                self.InputController.click_button('z', delay=1)
+                self.InputController.click_button('z', delay=5)
+                self.InputController.right_click_button()
+            elif int(our_monster['CardATK']) > int(highest_atk_monster['CardATK']):
                 self.InputController.click_button('z', delay=1)
                 card_index = self.CardStorageCore.return_index_of_object(CardAreas.Other_Monsters, highest_atk_monster)
                 print(self.CursorCore.cursor_position)
@@ -232,6 +234,8 @@ class GameCore:
                 self.InputController.click_button('z', delay=5)
                 self.CardStorageCore.remove_card_from_area(CardAreas.Other_Monsters, highest_atk_monster)
                 creatures_attacked.append(our_monster)
+                self.InputController.right_click_button()
+        print("Looped Through All Monsters")
 
 
     def end_turn(self):

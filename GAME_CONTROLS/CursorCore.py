@@ -7,7 +7,7 @@ class CursorCore:
         self.cursor_position = 0
 
     def default_cursor(self):
-        for i in range(self.max_cursor, self.min_cursor, -1):
+        for i in range(self.max_cursor, self.min_cursor - 1, -1):
             self.cursor_position = i
             if not self.callback_down is None:
                 self.callback_down(self.cursor_position)
