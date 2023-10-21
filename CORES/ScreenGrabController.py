@@ -3,8 +3,9 @@ from PIL import ImageGrab
 import pyautogui
 
 class ScreenGrabController:
-    def __init__(self, window_name=None):
+    def __init__(self, window_name=None, debug_info=True):
         self.window_name = window_name
+        self.debug_info = debug_info
         if self.window_name is None:
             self.window = None
         else:
@@ -17,7 +18,13 @@ class ScreenGrabController:
         top = self.window.top if self.window else top
         width = self.window.right if self.window else width
         height = self.window.bottom if self.window else height
+        if self.debug_info: print("Screenshot captured!")
         return screenshot.crop((left, top, width, height))
+
+    def take_screenshot_and_crop(self, left=0, top=0, box=None):
+        screenshot = self.take_screenshot(left=left, top=top)
+        if box is None: return screenshot
+        return screenshot.crop(box)
 
     def convert_pos(self, pos_x, pos_y):
         if self.window is None:

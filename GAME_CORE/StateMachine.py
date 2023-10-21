@@ -10,8 +10,8 @@ class StateList(Enum):
     END_PROGRAM = 6
 
 class StateMachine:
-    def __init__(self, loop_once=False, ignore_gather_info=True, ignore_combat=False):
-        self.current_state = StateList.LOADING
+    def __init__(self, loop_once=False, ignore_gather_info=True, ignore_combat=False, debug_info=True):
+        self.current_state = StateList.STARTING
         self.callback_functions = {}
         self.callback_functions[StateList.STARTING.name] = []
         self.callback_functions[StateList.GEN_PLAYER_HAND.name] = []
@@ -23,18 +23,21 @@ class StateMachine:
         self.loop_once = loop_once
         self.ignore_gather_info = ignore_gather_info
         self.ignore_combat = ignore_combat
+        self.debug_info = debug_info
 
     def add_callback_function(self, state, callback_function):
         if state is None or callback_function is None: return
+        if self.debug_info: print("Added callback function!")
         self.callback_functions[state.name].append(callback_function)
 
-    def trigger_callback_functions(self, state):
+    async def trigger_callback_functions(self, state):
         if len(self.callback_functions[state.name]) <= 0: return False
         for callback_function in self.callback_functions[state.name]:
-            callback_function()
+            await callback_function()
         return True
 
-    def trigger_state_machine(self):
+    async def trigger_state_machine(self):
+        if self.debug_info: print(f"New state {self.current_state}")
         if self.current_state is StateList.STARTING: self.current_state = StateList.GEN_PLAYER_HAND
         elif self.current_state is StateList.GEN_PLAYER_HAND: self.current_state = StateList.FIND_BEST_CARD_TO_PLAY
         elif self.current_state is StateList.FIND_BEST_CARD_TO_PLAY:
@@ -49,4 +52,4 @@ class StateMachine:
         elif self.current_state is StateList.END_TURN:
             if self.loop_once: self.current_state = StateList.END_PROGRAM
             else: self.current_state = StateList.GEN_PLAYER_HAND
-        if not self.trigger_callback_functions(self.current_state): return self.current_state
+        await self.trigger_callback_functions(self.current_state)

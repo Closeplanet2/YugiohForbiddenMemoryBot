@@ -2,6 +2,7 @@ from tkinter import Tk, Label, Button
 from CORES.ThreadController import ThreadController
 from PIL import ImageTk, Image
 from enum import Enum
+import time
 
 class DestructionStage(Enum):
     DESTROY = 0
@@ -15,8 +16,8 @@ class TkinterController:
         self.debug_info = debug_info
 
     # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
-    def create_window(self, wh=900, ww=400, wt="Title", sw=False, sh=False, bg="#000000"):
-        self.current_window = TkinterClass(wh, ww, wt, sw, sh, bg, self.window_loop)
+    def create_window(self, function_thread_callback, wh=900, ww=400, wt="Title", sw=False, sh=False, bg="#000000", update_gui_per_second=1):
+        self.current_window = TkinterClass(wh, ww, wt, sw, sh, bg, self.widget_thread_callback, function_thread_callback, update_gui_per_second)
         if self.debug_info: print(f"Window Created: {wt}")
 
     def destroy_widgets(self, current_window):
@@ -47,21 +48,35 @@ class TkinterController:
         if not self.current_window is None:
             self.current_window.add_image_as_grid(card_image, w, h, pos_x, pos_y, offset_x, offest_y, numx, numy, index, destroy_status)
 
-    def window_loop(self, thread_index, args):
+    def widget_thread_callback(self):
         if not self.current_window is None:
             for callback_function in self.callback_functions:
                 callback_function(self.current_window)
 
 class TkinterClass(Tk):
     # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
-    def __init__(self, wh, ww, wt, sw, sh, bg, update_function):
+    def __init__(self, wh, ww, wt, sw, sh, bg, widget_thread_callback, function_thread_callback, update_gui_per_second):
         super().__init__()
         self.ignore_destruction = {}
-        self.ThreadController = ThreadController(max_threads=1)
         self.main_loop_running = True
-        self.update_function = update_function
-        self.Thread = self.ThreadController.load_start(self.window_loop, True)
+        self.update_gui_per_second = update_gui_per_second
+        self.widget_thread_callback = widget_thread_callback
+        self.function_thread_callback = function_thread_callback
+        self.ThreadController = ThreadController(max_threads=1)
+        self.ThreadController.load_threads(self.callback_widget_thread_callback, True)
+        self.ThreadController.load_threads(self.callback_function_thread_callback, True)
+        self.ThreadController.start_all_threads()
         self.set_values(wh, ww, wt, sw, sh, bg)
+
+    def callback_widget_thread_callback(self, thread_index, args):
+        while self.main_loop_running:
+            self.widget_thread_callback()
+            time.sleep(1 / self.update_gui_per_second)
+
+    def callback_function_thread_callback(self, thread_index, args):
+        while self.main_loop_running:
+            self.function_thread_callback()
+            time.sleep(1 / self.update_gui_per_second)
 
     # Window Height, Window Width, Window Title, Scale Width, Scale Height, Background Color
     def set_values(self, wh, ww, wt, sw, sh, bg):
@@ -87,7 +102,10 @@ class TkinterClass(Tk):
         self.ignore_destruction[label] = destroy_status
 
     def add_button(self, text="Text Here", function_callback=None, bg="#000000", fg="#FFFFFF", w=10, h=10, x_pos=10, y_pos=10, fs=14, ff="Helvetica", destroy_status=None):
-        button = Button(self, text=text, command=function_callback, bg=bg, fg=fg, font=(ff, fs))
+        def button_callback():
+            if function_callback:
+                thread = ThreadController(max_threads=1).load_start(function_callback, daemon=True)
+        button = Button(self, text=text, command=button_callback, bg=bg, fg=fg, font=(ff, fs))
         button.place(x=x_pos, y=y_pos)
         button.config(width=w, height=h)
         if destroy_status is None: destroy_status = DestructionStage.DONT_DESTROY
@@ -107,7 +125,3 @@ class TkinterClass(Tk):
 
         if destroy_status is None: destroy_status = DestructionStage.DONT_DESTROY
         self.ignore_destruction[label] = destroy_status
-
-    def window_loop(self, thread_index, args):
-        while self.main_loop_running:
-            self.update_function(thread_index, args)

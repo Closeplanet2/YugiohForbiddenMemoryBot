@@ -2,49 +2,44 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d55391c-a5f3-437b-a051-582237d4a29a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GAME_CORE/CardCore.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GAME_CORE/CardStorageCore.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GAME_CORE/CursorCore.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GAME_CORE/StateMachine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GAME_CORE/GameCore.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GAME_CORE/GameSettings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/BlankCard.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Boo Koo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/CardBack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Dark Prisoner.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Disk Magician.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Dissolverock.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Embryonic Beast.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Fiend Kraken.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Fire Kraken.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Flame Viper.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Fungi of the Musk.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Gate Deeg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Magical Ghost.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Minomushi Warrior.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Mystic Lamp.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Pot the Trick.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Raigeki.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Saggi the Dark Clown.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Sectarian of Secrets.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Steel Scorpion.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Steel Shell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Water Element.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Wings of Wicked Flame.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Wood Remains.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMAGES/Zombie Warrior.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/CardCore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/CardImageCore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/CardStorageCore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/CursorCore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/GameCore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GAME_CONTROLS/StateCore.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/BlankCard.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Boo Koo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/CardBack.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Dark Prisoner.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Disk Magician.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Dissolverock.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Embryonic Beast.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Fiend Kraken.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Fire Kraken.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Flame Viper.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Fungi of the Musk.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Gate Deeg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Magical Ghost.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Minomushi Warrior.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Mystic Lamp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Pot the Trick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Raigeki.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Saggi the Dark Clown.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Sectarian of Secrets.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Steel Scorpion.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Steel Shell.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Water Element.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Wings of Wicked Flame.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Wood Remains.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMAGES/Zombie Warrior.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/full.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mini.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CORES/InputController.py" beforeDir="false" afterPath="$PROJECT_DIR$/CORES/InputController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CORES/ScreenGrabController.py" beforeDir="false" afterPath="$PROJECT_DIR$/CORES/ScreenGrabController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CORES/ThreadController.py" beforeDir="false" afterPath="$PROJECT_DIR$/CORES/ThreadController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CORES/TkinterController.py" beforeDir="false" afterPath="$PROJECT_DIR$/CORES/TkinterController.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAME_CORE/CardCore.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CORE/CardCore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAME_CORE/CardStorageCore.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CORE/CardStorageCore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAME_CORE/CursorCore.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CORE/CursorCore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GAME_CORE/StateMachine.py" beforeDir="false" afterPath="$PROJECT_DIR$/GAME_CORE/StateMachine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_VERSION_3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/_VERSION_3/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,11 +69,36 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\My Drive\Coding Portfolio\Python Projects\YugiohForbiddenMemoryBot" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="YugiohForbiddenMemoryBot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\filer\AppData\Local\Programs\Python\Python39\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -89,6 +109,10 @@
       <option name="presentableId" value="Default" />
       <updated>1697401348101</updated>
       <workItem from="1697401349272" duration="2980000" />
+      <workItem from="1697478318686" duration="8069000" />
+      <workItem from="1697635255360" duration="2617000" />
+      <workItem from="1697651543021" duration="743000" />
+      <workItem from="1697879911763" duration="3823000" />
     </task>
     <servers />
   </component>
@@ -105,5 +129,9 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/YugiohForbiddenMemoryBot$main.coverage" NAME="main Coverage Results" MODIFIED="1697882895177" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
