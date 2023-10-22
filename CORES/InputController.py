@@ -1,12 +1,26 @@
 import win32api
 import win32con
 import time
+from CORES.ThreadController import ThreadController
+from pynput import keyboard, mouse
 from pynput.keyboard import Key, Controller
 controller = Controller()
 
 class InputController:
     def __init__(self, debug_info=False):
         self.debug_info = debug_info
+
+    def listen_for_keyboard(self, on_press, on_release):
+        def keyboard_listener_thread(thread_index, args):
+            with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+                listener.join()
+        ThreadController(max_threads=1).load_start(method=keyboard_listener_thread, daemon=True)
+
+    def listen_for_mouse(self, on_click):
+        def keyboard_listener_thread(thread_index, args):
+            with mouse.Listener(on_click=on_click) as listener:
+                listener.join()
+        ThreadController(max_threads=1).load_start(method=keyboard_listener_thread, daemon=True)
 
     def click_pos(self, posx=77, posy=188, delay=0.5):
         win32api.SetCursorPos((posx, posy))

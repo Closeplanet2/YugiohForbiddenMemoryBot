@@ -8,6 +8,12 @@ class CursorCore:
         self.callback_up = callback_up
         self.cursor_position = self.max_cursor
 
+    async def default_cursor(self, delay=0.5):
+        for i in range(self.max_cursor, self.min_cursor - 1, -1):
+            self.cursor_position = i
+            if not self.callback_down is None:
+                self.callback_down(self.cursor_position, delay)
+
     async def set_cursor_position(self, new_cursor_position, delay=0.5):
         new_cursor_position = max(self.min_cursor, min(self.max_cursor, new_cursor_position))
         if new_cursor_position > self.cursor_position:

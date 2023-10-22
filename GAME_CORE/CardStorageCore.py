@@ -74,3 +74,15 @@ class CardStorageCore:
         if card is None: return
         self.call_callback_function(card_area, False, card)
         self.CardAreas[card_area.name].pop(index)
+
+    def return_highest_atk_card_from_area(self, card_area):
+        area = self.return_card_array_from_card_area(card_area)
+        if area is None: return None
+        highest_atk = -1
+        highest_card = None
+        for card in area:
+            card_atk = int(card['CardATK']) if len(card['CardATK']) > 0 else -1
+            if card_atk > highest_atk:
+                highest_atk = card_atk
+                highest_card = card
+        return highest_card

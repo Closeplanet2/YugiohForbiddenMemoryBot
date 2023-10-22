@@ -10,7 +10,7 @@ class StateList(Enum):
     END_PROGRAM = 6
 
 class StateMachine:
-    def __init__(self, loop_once=False, ignore_gather_info=True, ignore_combat=False, debug_info=True):
+    def __init__(self, debug_info=True):
         self.current_state = StateList.STARTING
         self.callback_functions = {}
         self.callback_functions[StateList.STARTING.name] = []
@@ -20,9 +20,6 @@ class StateMachine:
         self.callback_functions[StateList.COMBAT.name] = []
         self.callback_functions[StateList.END_TURN.name] = []
         self.callback_functions[StateList.END_PROGRAM.name] = []
-        self.loop_once = loop_once
-        self.ignore_gather_info = ignore_gather_info
-        self.ignore_combat = ignore_combat
         self.debug_info = debug_info
 
     def add_callback_function(self, state, callback_function):
@@ -36,20 +33,19 @@ class StateMachine:
             await callback_function()
         return True
 
-    async def trigger_state_machine(self):
-        if self.debug_info: print(f"New state {self.current_state}")
+    async def trigger_state_machine(self, loop_once=False, ignore_gather_info=True, ignore_combat=False):
         if self.current_state is StateList.STARTING: self.current_state = StateList.GEN_PLAYER_HAND
         elif self.current_state is StateList.GEN_PLAYER_HAND: self.current_state = StateList.FIND_BEST_CARD_TO_PLAY
         elif self.current_state is StateList.FIND_BEST_CARD_TO_PLAY:
-            if self.ignore_gather_info:
-                if self.ignore_combat: self.current_state = StateList.END_TURN
+            if ignore_gather_info:
+                if ignore_combat: self.current_state = StateList.END_TURN
                 else: self.current_state = StateList.COMBAT
             else: self.current_state = StateList.GEN_AI_BOARD
         elif self.current_state is StateList.GEN_AI_BOARD:
-            if self.ignore_combat: self.current_state = StateList.END_TURN
+            if ignore_combat: self.current_state = StateList.END_TURN
             else: self.current_state = StateList.COMBAT
         elif self.current_state is StateList.COMBAT: self.current_state = StateList.END_TURN
         elif self.current_state is StateList.END_TURN:
-            if self.loop_once: self.current_state = StateList.END_PROGRAM
+            if loop_once: self.current_state = StateList.END_PROGRAM
             else: self.current_state = StateList.GEN_PLAYER_HAND
         await self.trigger_callback_functions(self.current_state)
